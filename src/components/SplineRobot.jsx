@@ -10,8 +10,8 @@ export default function SplineRobot() {
       {/* BIGGER Position container for better HD rendering */}
       <div style={{
         position: 'absolute',
-        top: '45%',
-        right: '-25%', // Move further right to accommodate larger size
+        top: '43%',
+        right: '-33%', // Move further right to accommodate larger size
         transform: 'translateY(-50%)',
         width: '140%', // Increased from 120%
         height: '140%', // Increased from 120%

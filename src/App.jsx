@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CanvasScene from "./components/CanvasScene";
 import NeonCursor from "./components/NeonCursor";
 import PortalTransition from "./components/PortalTransition";
@@ -7,18 +7,44 @@ import SplineRobot from "./components/SplineRobot";
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
+  const particlesRef = useRef([]);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Function to generate random particles - OPTIMIZED
+  const generateParticles = () => {
+    const particles = [];
+    const particleCount = 40; // Reduced for performance
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.2 + 0.1,
+        color: Math.random() > 0.7 ? '#764ba2' : '#667eea',
+      });
+    }
+    particlesRef.current = particles;
+  };
+
+  useEffect(() => {
+    generateParticles();
   }, []);
 
   return (
     <>
-      {/* Navigation Bar - Fixed at top */}
+      {/* Navigation Bar */}
       <nav style={{
         position: 'fixed',
         top: 0,
@@ -26,36 +52,36 @@ function App() {
         width: '100%',
         zIndex: 1000,
         padding: '20px 40px',
-        background: scrolled ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(10px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-        transition: 'all 0.3s ease',
+        background: scrolled ? 'rgba(10, 10, 10, 0.98)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(15px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        boxShadow: scrolled ? '0 10px 30px rgba(0, 0, 0, 0.2)' : 'none',
       }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
         }}>
-          {/* Logo */}
           <div style={{
-            fontSize: '24px',
-            fontWeight: '800',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            fontSize: '26px',
+            fontWeight: '900',
+            background: 'linear-gradient(135deg, #667eea, #764ba2, #f093fb)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             letterSpacing: '-0.5px',
+            textShadow: '0 0 30px rgba(102, 126, 234, 0.3)',
           }}>
-          Sophia Bianca Aloria
+            Sophia Bianca Aloria
           </div>
 
-          {/* Navigation Links */}
           <div style={{
             display: 'flex',
-            gap: '40px',
+            gap: '35px',
             alignItems: 'center',
           }}>
             {['Home', 'About', 'Projects', 'Contact'].map((item) => (
@@ -65,17 +91,20 @@ function App() {
                 style={{
                   color: '#ffffff',
                   textDecoration: 'none',
-                  fontSize: '16px',
-                  fontWeight: '500',
+                  fontSize: '15px',
+                  fontWeight: '600',
                   transition: 'all 0.3s ease',
                   position: 'relative',
-                  padding: '8px 0',
+                  padding: '10px 0',
+                  letterSpacing: '0.5px',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#667eea';
+                  e.currentTarget.style.color = '#f093fb';
+                  e.currentTarget.querySelector('span').style.width = '100%';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.color = '#ffffff';
+                  e.currentTarget.querySelector('span').style.width = '0%';
                 }}
               >
                 {item}
@@ -85,169 +114,226 @@ function App() {
                   left: 0,
                   width: '0%',
                   height: '2px',
-                  background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                  transition: 'width 0.3s ease',
+                  background: 'linear-gradient(90deg, #667eea, #f093fb)',
+                  transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  borderRadius: '2px',
                 }} />
               </a>
             ))}
             
-            {/* Contact Button */}
             <button style={{
-              padding: '10px 24px',
-              fontSize: '14px',
-              fontWeight: '600',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              padding: '12px 30px',
+              fontSize: '15px',
+              fontWeight: '700',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
               border: 'none',
               borderRadius: '50px',
               color: 'white',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              letterSpacing: '0.5px',
-              boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              letterSpacing: '0.8px',
+              boxShadow: '0 5px 25px rgba(102, 126, 234, 0.4)',
+              position: 'relative',
+              overflow: 'hidden',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 6px 25px rgba(102, 126, 234, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 10px 35px rgba(102, 126, 234, 0.6)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(102, 126, 234, 0.3)';
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 5px 25px rgba(102, 126, 234, 0.4)';
             }}>
-              Let's Talk
+              <span style={{
+                position: 'relative',
+                zIndex: 2,
+              }}>
+                Let's Talk
+              </span>
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Section 1: Welcome/Hero - FIXED WITH INTERACTIVE ROBOT */}
+      {/* Section 1: Welcome/Hero - OPTIMIZED */}
       <section id="home" style={{ 
         width: "100vw", 
         height: "100vh", 
         position: "relative",
-        overflow: "hidden" 
+        overflow: "hidden",
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a0a2a 50%, #0a0a1a 100%)',
       }}>
         <CanvasScene />
-        <PortalTransition />
         
-        {/* Hero Content Container */}
+        {/* PortalTransition - BEHIND ROBOT */}
         <div style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          zIndex: 5,
+          zIndex: 1, // Lower than robot
+          pointerEvents: 'none', // Won't block interactions
+        }}>
+          <PortalTransition />
+        </div>
+        
+        {/* Subtle Particle Background - OPTIMIZED */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}>
+          {particlesRef.current.map((particle) => (
+            <div
+              key={particle.id}
+              style={{
+                position: 'absolute',
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                backgroundColor: particle.color,
+                borderRadius: '50%',
+                animation: `floatParticle ${Math.random() * 20 + 10}s linear infinite`,
+                animationDelay: `${Math.random() * 5}s`,
+                opacity: particle.opacity,
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* ROBOT - HIGHEST Z-INDEX, INTERACTIVE */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '70%',
+          height: '100%',
+          zIndex: 10, // Highest for interactivity
+          pointerEvents: 'auto',
+        }}>
+          <SplineRobot />
+        </div>
+        
+        {/* Text Content - SEPARATE CONTAINER */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 5, // Above background, below robot
+          pointerEvents: 'none', // Container doesn't block robot
         }}>
           
-          {/* Left Side: Text Content */}
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '10%',
-            transform: 'translateY(-50%)',
-            width: '45%',
-            maxWidth: '700px',
-            color: 'white',
-            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-            zIndex: 10,
-          }}>
-            <h1 style={{
-              fontSize: 'clamp(72px, 8vw, 120px)',
-              fontWeight: '800',
-              marginBottom: '10px',
-              background: 'linear-gradient(135deg, #ffffff 30%, #667eea 70%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-0.03em',
-              lineHeight: '0.9',
-            }}>
-              Creative<br />Vision.
-            </h1>
-            <p style={{
-              fontSize: 'clamp(20px, 2.5vw, 28px)',
-              fontWeight: '300',
-              color: '#cccccc',
-              marginBottom: '40px',
-              lineHeight: '1.3',
-            }}>
-              Bringing ideas to life through<br />audiovisual storytelling
-            </p>
-            
-            {/* View My Work Button */}
-            <button style={{
-              padding: '18px 48px',
-              fontSize: '18px',
-              fontWeight: '600',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              border: 'none',
-              borderRadius: '50px',
-              color: 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              letterSpacing: '0.5px',
-              boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
-              e.currentTarget.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 10px 30px rgba(102, 126, 234, 0.3)';
-            }}>
-              View My Work
-            </button>
-          </div>
-          
-          {/* Right Side: Interactive Robot */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: '60%',
-            height: '100%',
-            zIndex: 1,
-          }}>
-            <SplineRobot />
-          </div>
-          
-          {/* Gradient overlay for text readability */}
+          {/* Left gradient overlay */}
           <div style={{
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '50%',
+            width: '60%',
             height: '100%',
-            background: 'linear-gradient(90deg, rgba(10, 10, 10, 0.8) 0%, transparent 100%)',
-            zIndex: 2,
+            background: 'linear-gradient(90deg, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.4) 50%, transparent 100%)',
             pointerEvents: 'none',
           }} />
+          
+          {/* Text Content - Interactive elements only */}
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '8%',
+            transform: 'translateY(-50%)',
+            width: '45%',
+            maxWidth: '750px',
+            color: 'white',
+            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+            pointerEvents: 'auto', // Text area is interactive
+          }}>
+            <h1 style={{
+              fontSize: 'clamp(80px, 9vw, 140px)',
+              fontWeight: '900',
+              marginBottom: '15px',
+              background: 'linear-gradient(135deg, #ffffff 20%, #667eea 45%, #f093fb 70%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '-0.04em',
+              lineHeight: '0.85',
+              textShadow: '0 10px 40px rgba(102, 126, 234, 0.3)',
+            }}>
+              CREATIVE<br />VISION.
+            </h1>
+            <p style={{
+              fontSize: 'clamp(22px, 2.8vw, 32px)',
+              fontWeight: '300',
+              color: 'rgba(255, 255, 255, 0.9)',
+              marginBottom: '50px',
+              lineHeight: '1.4',
+              letterSpacing: '0.5px',
+              maxWidth: '600px',
+            }}>
+              Bringing ideas to life through<br />audiovisual storytelling
+            </p>
+            
+            <button style={{
+              padding: '22px 55px',
+              fontSize: '18px',
+              fontWeight: '700',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+              border: 'none',
+              borderRadius: '50px',
+              color: 'white',
+              cursor: 'pointer',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              letterSpacing: '1px',
+              boxShadow: '0 15px 40px rgba(102, 126, 234, 0.4)',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 20px 50px rgba(102, 126, 234, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.4)';
+            }}>
+              VIEW MY WORK →
+            </button>
+          </div>
         </div>
         
         {/* Scroll Down Indicator */}
         <div style={{
           position: 'absolute',
-          bottom: '40px',
+          bottom: '50px',
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 20,
-          color: '#667eea',
+          zIndex: 15,
+          color: '#f093fb',
           fontSize: '14px',
-          fontWeight: '500',
-          letterSpacing: '3px',
+          fontWeight: '600',
+          letterSpacing: '4px',
           textTransform: 'uppercase',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '15px',
+          gap: '20px',
+          opacity: 0.9,
+          pointerEvents: 'auto',
         }}>
           SCROLL DOWN
           <div style={{
-            width: '1px',
-            height: '60px',
-            background: 'linear-gradient(to bottom, #667eea, transparent)',
-            animation: 'scrollPulse 2s infinite',
+            width: '2px',
+            height: '80px',
+            background: 'linear-gradient(to bottom, #667eea, #f093fb, transparent)',
+            animation: 'scrollPulse 2.5s infinite',
+            borderRadius: '2px',
           }} />
         </div>
       </section>
@@ -257,7 +343,7 @@ function App() {
         <AboutMeSection />
       </section>
 
-      {/* Section 3: Projects */}
+      {/* Section 3: Projects - OPTIMIZED */}
       <section id="projects" style={{ 
         minHeight: "100vh", 
         backgroundColor: "#0a0a0a",
@@ -267,135 +353,154 @@ function App() {
         overflow: "hidden",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}>
-        {/* Grid background */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: `
-            linear-gradient(90deg, rgba(30, 30, 30, 0.1) 1px, transparent 1px),
-            linear-gradient(rgba(30, 30, 30, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-          opacity: 0.3,
-          zIndex: 1
-        }} />
-
         <div style={{ 
           position: "relative",
           zIndex: 2,
-          maxWidth: "1200px",
+          maxWidth: "1400px",
           margin: "0 auto",
         }}>
-          <h1 style={{ 
-            fontSize: "clamp(48px, 6vw, 72px)", 
-            marginBottom: "20px",
-            textAlign: "center",
-            background: "linear-gradient(135deg, #667eea, #764ba2)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            fontWeight: "800",
-            letterSpacing: "-0.02em"
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '60px',
           }}>
-            My Projects
-          </h1>
-          <p style={{ 
-            fontSize: "20px", 
-            maxWidth: "800px", 
-            margin: "0 auto 60px",
-            lineHeight: "1.8",
-            textAlign: "center",
-            color: "#b4c8e0"
-          }}>
-            🎬 Explore my work as an audiovisual producer
-          </p>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '15px',
+              marginBottom: '20px',
+              padding: '10px 25px',
+              background: 'rgba(102, 126, 234, 0.1)',
+              borderRadius: '50px',
+              border: '1px solid rgba(102, 126, 234, 0.2)',
+            }}>
+              <span style={{
+                fontSize: '24px',
+              }}>🎬</span>
+              <span style={{
+                color: '#667eea',
+                fontSize: '14px',
+                fontWeight: '600',
+                letterSpacing: '2px',
+              }}>
+                PORTFOLIO SHOWCASE
+              </span>
+            </div>
+            
+            <h1 style={{ 
+              fontSize: "clamp(52px, 7vw, 84px)", 
+              marginBottom: "25px",
+              background: "linear-gradient(135deg, #667eea, #f093fb)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              fontWeight: "900",
+              letterSpacing: "-0.03em",
+              lineHeight: "1.1",
+            }}>
+              Featured Projects
+            </h1>
+            <p style={{ 
+              fontSize: "20px", 
+              maxWidth: "700px", 
+              margin: "0 auto",
+              lineHeight: "1.8",
+              color: "rgba(255, 255, 255, 0.7)",
+              fontWeight: "300",
+            }}>
+              Immersive audiovisual experiences that blend creativity with technical excellence
+            </p>
+          </div>
 
           <div style={{ 
             display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "40px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "30px",
             marginBottom: "80px",
           }}>
             {[
               {
                 title: "Documentary Project",
                 description: "Documentary about local culture with innovative visual approach.",
-                tags: ["Documentary", "Camera", "Editing"],
+                tags: ["Documentary", "Cinematography", "Editing"],
                 type: "🎥",
-                year: "2023"
+                year: "2023",
+                accentColor: "#667eea",
               },
               {
                 title: "Advertising Campaign",
                 description: "Complete video campaign for local fashion brand.",
                 tags: ["Advertising", "Branding", "Post-production"],
                 type: "📺",
-                year: "2022"
+                year: "2022",
+                accentColor: "#f093fb",
               },
               {
                 title: "Corporate Event",
                 description: "Complete coverage of business event with multiple cameras.",
                 tags: ["Event", "Multi-camera", "Live"],
                 type: "🎪",
-                year: "2023"
+                year: "2023",
+                accentColor: "#764ba2",
               },
               {
                 title: "Photography Session",
                 description: "Professional photography session for artistic portfolio.",
                 tags: ["Photography", "Lighting", "Retouching"],
                 type: "📸",
-                year: "2022"
+                year: "2022",
+                accentColor: "#667eea",
               },
               {
                 title: "Music Video",
                 description: "Production and editing of music video for emerging artist.",
-                tags: ["Music", "Rhythm", "Color grading"],
+                tags: ["Music", "Rhythm", "Color Grading"],
                 type: "🎵",
-                year: "2023"
+                year: "2023",
+                accentColor: "#f093fb",
               },
               {
                 title: "Digital Content",
                 description: "Content creation for social media and digital platforms.",
                 tags: ["Social Media", "Short-form", "Viral"],
                 type: "📱",
-                year: "2023"
+                year: "2023",
+                accentColor: "#764ba2",
               },
             ].map((project, index) => (
-              <div key={index} style={{
-                backgroundColor: "rgba(20, 20, 30, 0.7)",
-                padding: "40px",
-                borderRadius: "24px",
-                border: "1px solid rgba(255, 255, 255, 0.05)",
-                backdropFilter: "blur(10px)",
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-10px)";
-                e.currentTarget.style.borderColor = "rgba(102, 126, 234, 0.3)";
-                e.currentTarget.style.backgroundColor = "rgba(20, 20, 30, 0.9)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.05)";
-                e.currentTarget.style.backgroundColor = "rgba(20, 20, 30, 0.7)";
-              }}
+              <div 
+                key={index}
+                style={{
+                  backgroundColor: "rgba(15, 15, 25, 0.7)",
+                  padding: "30px",
+                  borderRadius: "24px",
+                  border: "1px solid rgba(255, 255, 255, 0.05)",
+                  transition: "all 0.3s ease",
+                  cursor: "pointer",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-10px)";
+                  e.currentTarget.style.borderColor = `${project.accentColor}40`;
+                  e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.9)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.7)";
+                }}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
-                  marginBottom: '25px'
+                  marginBottom: '20px',
                 }}>
                   <div style={{
                     width: '60px',
                     height: '60px',
                     borderRadius: '15px',
-                    background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                    background: `linear-gradient(135deg, ${project.accentColor}, ${project.accentColor}80)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -410,8 +515,8 @@ function App() {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     color: '#cccccc',
                     borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '500'
+                    fontSize: '13px',
+                    fontWeight: '600',
                   }}>
                     {project.year}
                   </span>
@@ -422,33 +527,35 @@ function App() {
                   marginBottom: "15px",
                   color: "#ffffff",
                   fontWeight: "700",
-                  letterSpacing: "-0.01em"
                 }}>
                   {project.title}
                 </h3>
                 <p style={{ 
                   lineHeight: "1.6", 
-                  color: "#cccccc",
+                  color: "rgba(255, 255, 255, 0.7)",
                   fontSize: "16px",
-                  marginBottom: "20px"
+                  marginBottom: "20px",
                 }}>
                   {project.description}
                 </p>
                 
                 <div style={{
                   display: 'flex',
-                  gap: '10px',
-                  flexWrap: 'wrap'
+                  gap: '8px',
+                  flexWrap: 'wrap',
                 }}>
                   {project.tags.map((tag, idx) => (
-                    <span key={idx} style={{
-                      padding: '6px 12px',
-                      backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                      color: '#667eea',
-                      borderRadius: '20px',
-                      fontSize: '14px',
-                      fontWeight: '500'
-                    }}>
+                    <span 
+                      key={idx}
+                      style={{
+                        padding: '6px 12px',
+                        backgroundColor: 'rgba(102, 126, 234, 0.12)',
+                        color: project.accentColor,
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                      }}
+                    >
                       {tag}
                     </span>
                   ))}
@@ -459,31 +566,15 @@ function App() {
         </div>
       </section>
 
-      {/* Section 4: Contact */}
+      {/* Section 4: Contact - OPTIMIZED */}
       <section id="contact" style={{
         minHeight: "60vh",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#050505",
         padding: "100px 40px",
         position: "relative",
         overflow: "hidden",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}>
-        {/* Grid background */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: `
-            linear-gradient(90deg, rgba(30, 30, 30, 0.1) 1px, transparent 1px),
-            linear-gradient(rgba(30, 30, 30, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-          opacity: 0.3,
-          zIndex: 1
-        }} />
-
         <div style={{
           position: 'relative',
           zIndex: 2,
@@ -495,23 +586,23 @@ function App() {
             fontSize: 'clamp(36px, 5vw, 48px)',
             fontWeight: '800',
             marginBottom: '30px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            background: 'linear-gradient(135deg, #667eea, #f093fb)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            Let's Create Something Amazing
+            Ready to Bring Your Vision to Life?
           </h2>
           <p style={{
             fontSize: '18px',
-            color: '#b4c8e0',
+            color: 'rgba(255, 255, 255, 0.8)',
             marginBottom: '50px',
             lineHeight: '1.8',
             maxWidth: '600px',
             marginLeft: 'auto',
             marginRight: 'auto',
           }}>
-            Have a project in mind? Let's collaborate and bring your vision to life through compelling audiovisual storytelling.
+            Have a project in mind? Let's collaborate and create something extraordinary.
           </p>
           
           <div style={{
@@ -533,7 +624,7 @@ function App() {
                   padding: '16px 40px',
                   fontSize: '16px',
                   fontWeight: '600',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
                   border: 'none',
                   borderRadius: '50px',
                   color: 'white',
@@ -563,9 +654,9 @@ function App() {
                   fontSize: '16px',
                   fontWeight: '600',
                   background: 'transparent',
-                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                  border: '2px solid rgba(240, 147, 251, 0.3)',
                   borderRadius: '50px',
-                  color: 'white',
+                  color: '#f093fb',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   letterSpacing: '0.5px',
@@ -573,12 +664,14 @@ function App() {
                   display: 'inline-block',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(102, 126, 234, 0.8)';
-                  e.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)';
+                  e.currentTarget.style.borderColor = '#f093fb';
+                  e.currentTarget.style.background = 'rgba(240, 147, 251, 0.1)';
+                  e.currentTarget.style.transform = 'translateY(-5px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.borderColor = 'rgba(240, 147, 251, 0.3)';
                   e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 Call Me
@@ -586,12 +679,12 @@ function App() {
             </div>
             
             <div style={{
-              color: '#667eea',
-              fontSize: '14px',
-              fontWeight: '500',
-              marginTop: '20px',
+              color: '#f093fb',
+              fontSize: '16px',
+              fontWeight: '600',
+              fontFamily: "'JetBrains Mono', monospace",
             }}>
-              or reach me at: +57 314 290 8120
+              +57 314 290 8120
             </div>
           </div>
         </div>
@@ -599,7 +692,7 @@ function App() {
 
       {/* Footer */}
       <footer style={{
-        backgroundColor: '#050505',
+        backgroundColor: '#030303',
         padding: '40px',
         borderTop: '1px solid rgba(255, 255, 255, 0.05)',
         textAlign: 'center',
@@ -610,33 +703,34 @@ function App() {
           margin: '0 auto',
         }}>
           <div style={{
-            fontSize: '20px',
-            fontWeight: '800',
+            fontSize: '24px',
+            fontWeight: '900',
             marginBottom: '20px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            background: 'linear-gradient(135deg, #667eea, #f093fb)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            Oscar Fernando
+            Sophia Bianca Aloria
           </div>
+          
           <p style={{
-            color: '#888888',
+            color: 'rgba(255, 255, 255, 0.6)',
             fontSize: '14px',
             marginBottom: '30px',
             maxWidth: '600px',
             marginLeft: 'auto',
             marginRight: 'auto',
           }}>
-            Audiovisual Producer • Videographer • Editor • Photographer
+            Visual Storyteller • Creative Director • Multimedia Artist
           </p>
+          
           <div style={{
-            color: '#666666',
+            color: 'rgba(255, 255, 255, 0.4)',
             fontSize: '12px',
             fontWeight: '500',
-            letterSpacing: '0.5px',
           }}>
-            © {new Date().getFullYear()} Oscar Fernando. All rights reserved.
+            © {new Date().getFullYear()} Sophia Bianca Aloria. All rights reserved.
           </div>
         </div>
       </footer>
