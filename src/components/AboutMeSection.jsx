@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import My3DModel from './My3DModel'; // Import the 3D model component
 
 export default function AboutMeSection() {
   const sectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [hoverEffect, setHoverEffect] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,19 +25,31 @@ export default function AboutMeSection() {
       setScrollProgress(progress);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Check for mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', checkMobile);
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
-  // Rotation
-  const rotation = scrollProgress * 360;
+  // Rotation - KEEP YOUR EXISTING ROTATION
+  const rotation = 480 + (scrollProgress * 180);
+
+  // Glow intensity based on scroll
+  const glowIntensity = scrollProgress * 1.5;
 
   // Text emergence with fade: starts hidden inside body, slides out
-  // Position: 0 = inside body center, 1 = fully extended to sides
-  const leftTextX = scrollProgress * -350; // Moves left
-  const rightTextX = scrollProgress * 350; // Moves right
+  const leftTextX = scrollProgress * -350;
+  const rightTextX = scrollProgress * 350;
   
   // Opacity: fade in as it emerges (0 to 1)
   const textOpacity = Math.min(1, scrollProgress * 1.5);
@@ -54,7 +69,18 @@ export default function AboutMeSection() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      {/* Modern grid background */}
+      {/* Animated gradient background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(45deg, #0a0a0a 0%, #0f0f1a 50%, #0a0a0a 100%)',
+        zIndex: 0
+      }} />
+
+      {/* Modern grid background with animation */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -62,135 +88,140 @@ export default function AboutMeSection() {
         width: '100%',
         height: '100%',
         backgroundImage: `
-          linear-gradient(90deg, rgba(30, 30, 30, 0.1) 1px, transparent 1px),
-          linear-gradient(rgba(30, 30, 30, 0.1) 1px, transparent 1px)
+          linear-gradient(90deg, rgba(102, 126, 234, 0.1) 1px, transparent 1px),
+          linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px)
         `,
         backgroundSize: '50px 50px',
-        opacity: 0.2,
+        animation: 'gridMove 20s linear infinite',
+        opacity: 0.3,
         zIndex: 0
       }} />
 
-      {/* Character Shape - Center, Bigger, Glowing (Modern version) */}
-      <div
+      {/* Glowing orb behind model */}
+      <div style={{
+        position: 'absolute',
+        width: '500px',
+        height: '500px',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        background: `radial-gradient(circle, 
+          rgba(102, 126, 234, ${0.2 + glowIntensity * 0.1}) 0%,
+          rgba(118, 75, 162, ${0.15 + glowIntensity * 0.05}) 30%,
+          rgba(15, 15, 25, 0) 70%)`,
+        filter: `blur(${40 + glowIntensity * 20}px)`,
+        zIndex: 1,
+        transition: 'all 0.3s ease-out'
+      }} />
+
+      {/* Particle effect dots */}
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
+        pointerEvents: 'none'
+      }}>
+        {Array.from({ length: 15 }).map((_, i) => (
+          <div key={i} style={{
+            position: 'absolute',
+            width: Math.random() * 4 + 2 + 'px',
+            height: Math.random() * 4 + 2 + 'px',
+            left: Math.random() * 100 + '%',
+            top: Math.random() * 100 + '%',
+            backgroundColor: `rgba(102, 126, 234, ${0.3 + Math.random() * 0.4})`,
+            borderRadius: '50%',
+            filter: 'blur(1px)',
+            animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+            animationDelay: `${Math.random() * 2}s`,
+            opacity: 0.7
+          }} />
+        ))}
+      </div>
+
+      {/* 3D Model Container with enhanced styling - KEEP YOUR DIMENSIONS */}
+      <div 
         style={{
           position: 'absolute',
           width: '400px',
-          height: '520px',
+          height: '600px',
           top: '50%',
           left: '50%',
-          transform: `translate(-50%, -50%) rotateY(${rotation}deg)`,
-          transformStyle: 'preserve-3d',
-          transition: 'transform 0.1s linear',
-          zIndex: 3
+          transform: `translate(-50%, -50%)`,
+          zIndex: 3,
+          pointerEvents: 'none',
+          borderRadius: '15px',
+          overflow: 'hidden',
+          border: `1px solid rgba(102, 126, 234, ${0.2 + glowIntensity * 0.3})`,
+          boxShadow: `
+            0 0 ${60 + glowIntensity * 40}px rgba(102, 126, 234, ${0.3 + glowIntensity * 0.2}),
+            inset 0 0 ${40 + glowIntensity * 20}px rgba(102, 126, 234, ${0.1 + glowIntensity * 0.1})
+          `,
+          transition: 'all 0.3s ease-out'
         }}
+        onMouseEnter={() => setHoverEffect(true)}
+        onMouseLeave={() => setHoverEffect(false)}
       >
+        {/* Inner glow border */}
         <div style={{
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          filter: 'drop-shadow(0 0 60px rgba(102, 126, 234, 0.8))'
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: '15px',
+          border: `2px solid rgba(102, 126, 234, ${0.1})`,
+          boxShadow: `inset 0 0 20px rgba(102, 126, 234, ${0.15})`,
+          pointerEvents: 'none',
+          zIndex: 4
+        }} />
+
+        <My3DModel 
+          rotation={rotation} 
+          hoverEffect={hoverEffect}
+          glowIntensity={glowIntensity}
+        />
+      </div>
+
+      {/* Floating info badge */}
+      <div style={{
+        position: 'absolute',
+        top: '25%',
+        right: 'calc(50% + 250px)',
+        backgroundColor: 'rgba(15, 15, 25, 0.9)',
+        padding: '12px 20px',
+        borderRadius: '12px',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        backdropFilter: 'blur(10px)',
+        transform: `translateX(${scrollProgress * 50}px)`,
+        opacity: textOpacity * 0.8,
+        transition: 'all 0.3s ease-out',
+        zIndex: 2,
+        display: isMobile ? 'none' : 'block'
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          {/* Head - Modern */}
           <div style={{
-            position: 'absolute',
-            top: '0',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '120px',
-            height: '120px',
+            width: '10px',
+            height: '10px',
+            backgroundColor: '#667eea',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '3px solid rgba(255, 255, 255, 0.8)',
-            boxShadow: '0 0 50px rgba(102, 126, 234, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.4)'
+            animation: 'pulse 2s infinite'
           }} />
-          
-          {/* Neck - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '112px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '60px',
-            height: '40px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            borderLeft: '3px solid rgba(255, 255, 255, 0.7)',
-            borderRight: '3px solid rgba(255, 255, 255, 0.7)',
-            boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)'
-          }} />
-          
-          {/* Torso - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '152px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '200px',
-            height: '250px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '4px solid rgba(255, 255, 255, 0.8)',
-            borderRadius: '30px 30px 15px 15px',
-            boxShadow: '0 0 50px rgba(102, 126, 234, 0.6), inset 0 0 40px rgba(255, 255, 255, 0.3)'
-          }} />
-          
-          {/* Left Arm - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '180px',
-            left: '15px',
-            width: '50px',
-            height: '160px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '3px solid rgba(255, 255, 255, 0.7)',
-            borderRadius: '30px',
-            transform: 'rotate(-15deg)',
-            transformOrigin: 'top center',
-            boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)'
-          }} />
-          
-          {/* Right Arm - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '180px',
-            right: '15px',
-            width: '50px',
-            height: '160px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '3px solid rgba(255, 255, 255, 0.7)',
-            borderRadius: '30px',
-            transform: 'rotate(15deg)',
-            transformOrigin: 'top center',
-            boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)'
-          }} />
-          
-          {/* Left Leg - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '402px',
-            left: '120px',
-            width: '60px',
-            height: '118px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '3px solid rgba(255, 255, 255, 0.7)',
-            borderRadius: '20px',
-            boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)'
-          }} />
-          
-          {/* Right Leg - Modern */}
-          <div style={{
-            position: 'absolute',
-            top: '402px',
-            right: '120px',
-            width: '60px',
-            height: '118px',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95))',
-            border: '3px solid rgba(255, 255, 255, 0.7)',
-            borderRadius: '20px',
-            boxShadow: '0 0 30px rgba(102, 126, 234, 0.5)'
-          }} />
+          <span style={{
+            color: '#d0e0f0',
+            fontSize: '13px',
+            fontWeight: '500'
+          }}>
+            3D Character Model
+          </span>
         </div>
       </div>
 
-      {/* Left Text Panel - About Me */}
+      {/* Left Text Panel - About Me - KEEP YOUR EXACT CONTENT */}
       <div
         style={{
           position: 'absolute',
@@ -199,14 +230,19 @@ export default function AboutMeSection() {
           transform: `translate(calc(-50% + ${leftTextX}px), -50%)`,
           maxWidth: '450px',
           opacity: textOpacity,
-          transition: 'opacity 0.2s ease-out',
+          transition: 'all 0.3s ease-out',
           zIndex: 2,
           padding: '40px',
-          backgroundColor: 'rgba(15, 15, 25, 0.85)',
+          backgroundColor: 'rgba(15, 15, 25, 0.9)',
           borderRadius: '24px',
           border: '1px solid rgba(102, 126, 234, 0.3)',
           backdropFilter: 'blur(15px)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(102, 126, 234, 0.1)'
+          boxShadow: `
+            0 20px 40px rgba(0, 0, 0, 0.5),
+            0 0 60px rgba(102, 126, 234, 0.1),
+            inset 0 0 30px rgba(102, 126, 234, 0.1)
+          `,
+          width: isMobile ? '90%' : 'auto'
         }}
       >
         <h2 style={{
@@ -240,7 +276,7 @@ export default function AboutMeSection() {
             color: '#d0e0f0',
             marginBottom: '15px'
           }}>
-            I am an audiovisual producer with over 3 years of experience as a videographer, video editor, and photographer.
+            I am an audiovisual producer with over 3 years of experience as a video editor, and web, softW coder.
           </p>
         </div>
 
@@ -260,14 +296,14 @@ export default function AboutMeSection() {
             lineHeight: '1.7',
             color: '#c0d8f0'
           }}>
-            <strong style={{ color: '#ffffff' }}>Salesian Polytechnic University</strong><br />
-            Communication and Advertising<br />
-            <span style={{ color: '#a0c0e0', fontSize: '14px' }}>Guayaquil, Ecuador</span>
+            <strong style={{ color: '#ffffff' }}>CIT-U Cebu Institute Technology University</strong><br />
+            Information technology<br />
+            <span style={{ color: '#a0c0e0', fontSize: '14px' }}>3rd Yr Student</span>
           </p>
         </div>
       </div>
 
-      {/* Right Text Panel - Skills & Contact */}
+      {/* Right Text Panel - Skills & Contact - KEEP YOUR EXACT CONTENT */}
       <div
         style={{
           position: 'absolute',
@@ -276,15 +312,20 @@ export default function AboutMeSection() {
           transform: `translate(calc(50% + ${rightTextX}px), -50%)`,
           maxWidth: '450px',
           opacity: textOpacity,
-          transition: 'opacity 0.2s ease-out',
+          transition: 'all 0.3s ease-out',
           textAlign: 'left',
           zIndex: 2,
           padding: '40px',
-          backgroundColor: 'rgba(15, 15, 25, 0.85)',
+          backgroundColor: 'rgba(15, 15, 25, 0.9)',
           borderRadius: '24px',
           border: '1px solid rgba(102, 126, 234, 0.3)',
           backdropFilter: 'blur(15px)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(102, 126, 234, 0.1)'
+          boxShadow: `
+            0 20px 40px rgba(0, 0, 0, 0.5),
+            0 0 60px rgba(102, 126, 234, 0.1),
+            inset 0 0 30px rgba(102, 126, 234, 0.1)
+          `,
+          width: isMobile ? '90%' : 'auto'
         }}
       >
         <h3 style={{
@@ -310,7 +351,7 @@ export default function AboutMeSection() {
             alignItems: 'center',
             gap: '10px'
           }}>
-            <span style={{ color: '#667eea' }}>📞</span> +57 314 290 8120
+            +0975 076 8513
           </p>
           <p style={{
             fontSize: '16px',
@@ -320,7 +361,7 @@ export default function AboutMeSection() {
             alignItems: 'center',
             gap: '10px'
           }}>
-            <span style={{ color: '#764ba2' }}>✉️</span> ofserna2519@gmail.com
+            sophie.aloria@gmail.com
           </p>
         </div>
 
@@ -335,7 +376,7 @@ export default function AboutMeSection() {
             Skills & Competencies
           </h4>
           <div style={{ display: 'flex', gap: '12px', marginBottom: '18px', flexWrap: 'wrap' }}>
-            {['Pr', 'Ai', 'Ps', 'Lr'].map((skill) => (
+            {['Ae', 'Am', 'Ps', 'Lr'].map((skill) => (
               <div key={skill} style={{
                 width: '50px',
                 height: '50px',
@@ -361,10 +402,9 @@ export default function AboutMeSection() {
             listStyle: 'none',
             padding: 0
           }}>
-            <li style={{ marginBottom: '10px' }}>• Camera operation</li>
-            <li style={{ marginBottom: '10px' }}>• Lighting management</li>
+            <li style={{ marginBottom: '10px' }}>• Software, Web Coding</li>
+            <li style={{ marginBottom: '10px' }}>• UI/UX designer</li>
             <li style={{ marginBottom: '10px' }}>• Video recording and editing knowledge</li>
-            <li>• Creativity</li>
           </ul>
         </div>
 
@@ -376,9 +416,9 @@ export default function AboutMeSection() {
             fontWeight: '600',
             letterSpacing: '0.5px'
           }}>
-            My Work
+            My Github Profile
           </h4>
-          <a href="https://surl.li/wkwduf" target="_blank" rel="noopener noreferrer" style={{
+          <a href="https://github.com/sophie546" target="_blank" rel="noopener noreferrer" style={{
             fontSize: '16px',
             color: '#96d0ff',
             textDecoration: 'none',
@@ -394,12 +434,12 @@ export default function AboutMeSection() {
             e.currentTarget.style.color = '#96d0ff';
             e.currentTarget.style.borderBottomColor = 'rgba(150, 208, 255, 0.4)';
           }}>
-            https://surl.li/wkwduf
+            https://github.com/sophie546
           </a>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Enhanced scroll indicator */}
       <div style={{
         position: 'absolute',
         bottom: '40px',
@@ -411,11 +451,66 @@ export default function AboutMeSection() {
         fontWeight: '500',
         letterSpacing: '1px',
         opacity: 0.7,
-        textAlign: 'center'
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '15px'
       }}>
-        <div style={{ marginBottom: '10px' }}>▼</div>
-        <div>EXPLORE MY WORK</div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          animation: 'bounce 2s infinite'
+        }}>
+          <div style={{
+            width: '2px',
+            height: '30px',
+            background: 'linear-gradient(to bottom, #667eea, transparent)',
+            borderRadius: '1px'
+          }} />
+          <div style={{
+            width: '2px',
+            height: '20px',
+            background: 'linear-gradient(to bottom, #667eea, transparent)',
+            borderRadius: '1px',
+            opacity: 0.7
+          }} />
+        </div>
+        <div style={{
+          padding: '10px 20px',
+          background: 'rgba(102, 126, 234, 0.1)',
+          borderRadius: '20px',
+          border: '1px solid rgba(102, 126, 234, 0.3)',
+          backdropFilter: 'blur(5px)'
+        }}>
+          EXPLORE MY WORK
+        </div>
       </div>
+
+      {/* Add CSS animations */}
+      <style>{`
+        @keyframes gridMove {
+          0% { background-position: 0 0; }
+          100% { background-position: 50px 50px; }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(-20px) translateX(10px); }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
     </div>
   );
 }

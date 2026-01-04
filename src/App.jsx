@@ -277,7 +277,7 @@ function App() {
               letterSpacing: '0.5px',
               maxWidth: '600px',
             }}>
-              Bringing ideas to life through<br />audiovisual storytelling
+              Bringing your ideas into reality <br />through my creativity
             </p>
             
             <button style={{
@@ -373,9 +373,6 @@ function App() {
               borderRadius: '50px',
               border: '1px solid rgba(102, 126, 234, 0.2)',
             }}>
-              <span style={{
-                fontSize: '24px',
-              }}>🎬</span>
               <span style={{
                 color: '#667eea',
                 fontSize: '14px',
