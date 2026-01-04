@@ -343,14 +343,13 @@ function App() {
         <AboutMeSection />
       </section>
 
-      {/* Section 3: Projects - OPTIMIZED */}
+      {/* Section 3: Projects */}
       <section id="projects" style={{ 
         minHeight: "100vh", 
         backgroundColor: "#0a0a0a",
         padding: "120px 40px",
         color: "white",
         position: "relative",
-        overflow: "hidden",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}>
         <div style={{ 
@@ -359,6 +358,8 @@ function App() {
           maxWidth: "1400px",
           margin: "0 auto",
         }}>
+          
+          {/* Coding Projects Section */}
           <div style={{
             textAlign: 'center',
             marginBottom: '60px',
@@ -379,7 +380,7 @@ function App() {
                 fontWeight: '600',
                 letterSpacing: '2px',
               }}>
-                PORTFOLIO SHOWCASE
+                CODING PROJECTS
               </span>
             </div>
             
@@ -394,7 +395,7 @@ function App() {
               letterSpacing: "-0.03em",
               lineHeight: "1.1",
             }}>
-              Featured Projects
+              Development Projects
             </h1>
             <p style={{ 
               fontSize: "20px", 
@@ -404,7 +405,7 @@ function App() {
               color: "rgba(255, 255, 255, 0.7)",
               fontWeight: "300",
             }}>
-              Showcasing creative and technical projects in coding, web, and video or graphic editing
+              Showcasing creative and technical projects in coding
             </p>
           </div>
 
@@ -417,7 +418,7 @@ function App() {
             {[
               {
                 title: "WildcatsIHUB",
-                description: "The Wildcats’ iHub is a centralized web platform for IT and CS student projects.",
+                description: "The Wildcats' iHub is a centralized web platform for IT and CS student projects.",
                 tags: ["Web System", "Repository", "IT Solution"],
                 type: "🧠",
                 year: "2025",
@@ -531,15 +532,6 @@ function App() {
         }}>
           {project.year}
         </span>
-        
-        {/* Project Links */}
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-        }}>
-           
-          
-        </div>
       </div>
     </div>
     
@@ -582,8 +574,8 @@ function App() {
       ))}
     </div>
 
-    {/* Bottom Links (Optional) */}
-    {(project.repoLink || project.deployLink || project.videoLink) && (
+    {/* Project Links */}
+    {(project.repoLink || project.deployLink) && (
       <div style={{
         display: 'flex',
         gap: '10px',
@@ -655,54 +647,209 @@ function App() {
             Live Demo
           </a>
         )}
-        
-        {project.videoLink && (
-          <a 
-            href={project.videoLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(255, 86, 86, 0.15)',
-              color: '#ff5656',
-              borderRadius: '10px',
-              textDecoration: 'none',
-              fontSize: '13px',
-              fontWeight: '600',
-              border: '1px solid rgba(255, 86, 86, 0.3)',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 86, 86, 0.25)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 86, 86, 0.15)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Watch Video
-          </a>
-        )}
       </div>
     )}
   </div>
 ))}
           </div>
+
+          {/* Video Editing Projects Section */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '60px',
+            marginTop: '120px',
+          }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '15px',
+              marginBottom: '20px',
+              padding: '10px 25px',
+              background: 'rgba(240, 147, 251, 0.1)',
+              borderRadius: '50px',
+              border: '1px solid rgba(240, 147, 251, 0.2)',
+            }}>
+              <span style={{
+                color: '#f093fb',
+                fontSize: '14px',
+                fontWeight: '600',
+                letterSpacing: '2px',
+              }}>
+                CREATIVE MEDIA
+              </span>
+            </div>
+            
+            <h1 style={{ 
+              fontSize: "clamp(52px, 7vw, 84px)", 
+              marginBottom: "25px",
+              background: "linear-gradient(135deg, #f093fb, #667eea)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              fontWeight: "900",
+              letterSpacing: "-0.03em",
+              lineHeight: "1.1",
+            }}>
+              Video Editing Projects
+            </h1>
+            <p style={{ 
+              fontSize: "20px", 
+              maxWidth: "700px", 
+              margin: "0 auto",
+              lineHeight: "1.8",
+              color: "rgba(255, 255, 255, 0.7)",
+              fontWeight: "300",
+            }}>
+              Professional video editing, motion graphics, and visual storytelling projects
+            </p>
+          </div>
+
+          {/* Video Projects Grid - Coming Soon Placeholder */}
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "30px",
+            marginBottom: "80px",
+          }}>
+            {/* Placeholder for Future Video Projects */}
+            <div style={{
+              backgroundColor: "rgba(15, 15, 25, 0.5)",
+              padding: "40px",
+              borderRadius: "24px",
+              border: "2px dashed rgba(240, 147, 251, 0.3)",
+              textAlign: 'center',
+              height: '300px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'rgba(240, 147, 251, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '20px',
+                fontSize: '32px',
+                color: '#f093fb',
+              }}>
+                🎬
+              </div>
+              <h3 style={{ 
+                fontSize: "22px", 
+                marginBottom: "10px",
+                color: "#ffffff",
+                fontWeight: "700",
+              }}>
+                Coming Soon
+              </h3>
+              <p style={{ 
+                lineHeight: "1.6", 
+                color: "rgba(255, 255, 255, 0.5)",
+                fontSize: "16px",
+              }}>
+                Video projects will be uploaded here soon
+              </p>
+            </div>
+
+            <div style={{
+              backgroundColor: "rgba(15, 15, 25, 0.5)",
+              padding: "40px",
+              borderRadius: "24px",
+              border: "2px dashed rgba(240, 147, 251, 0.3)",
+              textAlign: 'center',
+              height: '300px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'rgba(240, 147, 251, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '20px',
+                fontSize: '32px',
+                color: '#f093fb',
+              }}>
+                🎥
+              </div>
+              <h3 style={{ 
+                fontSize: "22px", 
+                marginBottom: "10px",
+                color: "#ffffff",
+                fontWeight: "700",
+              }}>
+                More Videos
+              </h3>
+              <p style={{ 
+                lineHeight: "1.6", 
+                color: "rgba(255, 255, 255, 0.5)",
+                fontSize: "16px",
+              }}>
+                Additional projects coming soon
+              </p>
+            </div>
+
+            <div style={{
+              backgroundColor: "rgba(15, 15, 25, 0.5)",
+              padding: "40px",
+              borderRadius: "24px",
+              border: "2px dashed rgba(240, 147, 251, 0.3)",
+              textAlign: 'center',
+              height: '300px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'rgba(240, 147, 251, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '20px',
+                fontSize: '32px',
+                color: '#f093fb',
+              }}>
+                ✨
+              </div>
+              <h3 style={{ 
+                fontSize: "22px", 
+                marginBottom: "10px",
+                color: "#ffffff",
+                fontWeight: "700",
+              }}>
+                Stay Tuned
+              </h3>
+              <p style={{ 
+                lineHeight: "1.6", 
+                color: "rgba(255, 255, 255, 0.5)",
+                fontSize: "16px",
+              }}>
+                Creative content in production
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Section 4: Contact - OPTIMIZED */}
+      {/* Section 4: Contact */}
       <section id="contact" style={{
         minHeight: "60vh",
         backgroundColor: "#050505",
         padding: "100px 40px",
         position: "relative",
-        overflow: "hidden",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}>
         <div style={{
