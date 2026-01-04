@@ -404,7 +404,7 @@ function App() {
               color: "rgba(255, 255, 255, 0.7)",
               fontWeight: "300",
             }}>
-              Immersive audiovisual experiences that blend creativity with technical excellence
+              Showcasing creative and technical projects in coding, web, and video or graphic editing
             </p>
           </div>
 
@@ -416,149 +416,282 @@ function App() {
           }}>
             {[
               {
-                title: "Documentary Project",
-                description: "Documentary about local culture with innovative visual approach.",
-                tags: ["Documentary", "Cinematography", "Editing"],
-                type: "🎥",
-                year: "2023",
+                title: "WildcatsIHUB",
+                description: "The Wildcats’ iHub is a centralized web platform for IT and CS student projects.",
+                tags: ["Web System", "Repository", "IT Solution"],
+                type: "🧠",
+                year: "2025",
                 accentColor: "#667eea",
+                repoLink: "https://github.com/sophie546/WildcatsIHUB", 
+                deployLink: "https://wildcatsihub-z029.onrender.com", 
               },
               {
-                title: "Advertising Campaign",
-                description: "Complete video campaign for local fashion brand.",
-                tags: ["Advertising", "Branding", "Post-production"],
-                type: "📺",
-                year: "2022",
+                title: "PQMS",
+                description: "A web-based system that digitizes patient registration, queues, and consultations for clinics and barangay health centers.",
+                tags: ["Health System", "Queue Management", "Web System"],
+                type: "🩺",
+                year: "2025",
                 accentColor: "#f093fb",
+                repoLink: "https://github.com/sophie546/PQMS", 
               },
               {
-                title: "Corporate Event",
-                description: "Complete coverage of business event with multiple cameras.",
-                tags: ["Event", "Multi-camera", "Live"],
-                type: "🎪",
+                title: "Vortex",
+                description: "A pixelated game with multiple levels across different universes, With three characters that you can play.",
+                tags: ["Pixel Game", "Platformer", "Multi-Level"],
+                type: "🎮",
                 year: "2023",
                 accentColor: "#764ba2",
+                repoLink: "https://github.com/Desiigner101/Vortex", 
               },
               {
-                title: "Photography Session",
-                description: "Professional photography session for artistic portfolio.",
-                tags: ["Photography", "Lighting", "Retouching"],
-                type: "📸",
-                year: "2022",
+                title: "E-Bingo: The CatGo Edition",
+                description: "A fun online bingo platform with unique game codes, real-time game board, and card management.",
+                tags: ["Game Platform", "Web App", "Real-Time"],
+                type: "🎮",
+                year: "2025",
                 accentColor: "#667eea",
+                repoLink: "https://github.com/sophie546/Bingo-", 
               },
               {
-                title: "Music Video",
-                description: "Production and editing of music video for emerging artist.",
-                tags: ["Music", "Rhythm", "Color Grading"],
-                type: "🎵",
-                year: "2023",
+                title: "STEPSS",
+                description: "A Kotlin-based app that tracks your steps, focusing exclusively on walking activity.",
+                tags: ["Health App", "Kotlin", "Step Tracker"],
+                type: "👟",
+                year: "2024",
                 accentColor: "#f093fb",
+                repoLink: "https://github.com/sophie546/STEPSS-real-", 
+
               },
               {
-                title: "Digital Content",
-                description: "Content creation for social media and digital platforms.",
-                tags: ["Social Media", "Short-form", "Viral"],
-                type: "📱",
-                year: "2023",
+                title: "Vortex - (Text Based)",
+                description: "A terminal-based text game with different universe or levels, it is like a cyberpunk style",
+                tags: ["Text Game", "Terminal Based Game", "Interactive"],
+                type: "🎮",
+                year: "2024",
                 accentColor: "#764ba2",
+                repoLink: "https://github.com/Desiigner101/OOP_JAVAGAME-GG-", 
               },
             ].map((project, index) => (
-              <div 
-                key={index}
-                style={{
-                  backgroundColor: "rgba(15, 15, 25, 0.7)",
-                  padding: "30px",
-                  borderRadius: "24px",
-                  border: "1px solid rgba(255, 255, 255, 0.05)",
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-10px)";
-                  e.currentTarget.style.borderColor = `${project.accentColor}40`;
-                  e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.9)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.05)";
-                  e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.7)";
-                }}
-              >
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  marginBottom: '20px',
-                }}>
-                  <div style={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '15px',
-                    background: `linear-gradient(135deg, ${project.accentColor}, ${project.accentColor}80)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '28px',
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}>
-                    {project.type}
-                  </div>
-                  <span style={{
-                    padding: '6px 12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    color: '#cccccc',
-                    borderRadius: '20px',
-                    fontSize: '13px',
-                    fontWeight: '600',
-                  }}>
-                    {project.year}
-                  </span>
-                </div>
-                
-                <h3 style={{ 
-                  fontSize: "24px", 
-                  marginBottom: "15px",
-                  color: "#ffffff",
-                  fontWeight: "700",
-                }}>
-                  {project.title}
-                </h3>
-                <p style={{ 
-                  lineHeight: "1.6", 
-                  color: "rgba(255, 255, 255, 0.7)",
-                  fontSize: "16px",
-                  marginBottom: "20px",
-                }}>
-                  {project.description}
-                </p>
-                
-                <div style={{
-                  display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                }}>
-                  {project.tags.map((tag, idx) => (
-                    <span 
-                      key={idx}
-                      style={{
-                        padding: '6px 12px',
-                        backgroundColor: 'rgba(102, 126, 234, 0.12)',
-                        color: project.accentColor,
-                        borderRadius: '20px',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
+  <div 
+    key={index}
+    style={{
+      backgroundColor: "rgba(15, 15, 25, 0.7)",
+      padding: "30px",
+      borderRadius: "24px",
+      border: "1px solid rgba(255, 255, 255, 0.05)",
+      transition: "all 0.3s ease",
+      cursor: "pointer",
+      position: "relative",
+      overflow: "hidden",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-10px)";
+      e.currentTarget.style.borderColor = `${project.accentColor}40`;
+      e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.9)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.05)";
+      e.currentTarget.style.backgroundColor = "rgba(15, 15, 25, 0.7)";
+    }}
+  >
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: '20px',
+    }}>
+      <div style={{
+        width: '60px',
+        height: '60px',
+        borderRadius: '15px',
+        background: `linear-gradient(135deg, ${project.accentColor}, ${project.accentColor}80)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '28px',
+        fontWeight: 'bold',
+        color: 'white',
+      }}>
+        {project.type}
+      </div>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: '10px',
+      }}>
+        <span style={{
+          padding: '6px 12px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          color: '#cccccc',
+          borderRadius: '20px',
+          fontSize: '13px',
+          fontWeight: '600',
+        }}>
+          {project.year}
+        </span>
+        
+        {/* Project Links */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+        }}>
+           
+          
+        </div>
+      </div>
+    </div>
+    
+    <h3 style={{ 
+      fontSize: "24px", 
+      marginBottom: "15px",
+      color: "#ffffff",
+      fontWeight: "700",
+    }}>
+      {project.title}
+    </h3>
+    <p style={{ 
+      lineHeight: "1.6", 
+      color: "rgba(255, 255, 255, 0.7)",
+      fontSize: "16px",
+      marginBottom: "20px",
+    }}>
+      {project.description}
+    </p>
+    
+    <div style={{
+      display: 'flex',
+      gap: '8px',
+      flexWrap: 'wrap',
+    }}>
+      {project.tags.map((tag, idx) => (
+        <span 
+          key={idx}
+          style={{
+            padding: '6px 12px',
+            backgroundColor: 'rgba(102, 126, 234, 0.12)',
+            color: project.accentColor,
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '600',
+          }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+
+    {/* Bottom Links (Optional) */}
+    {(project.repoLink || project.deployLink || project.videoLink) && (
+      <div style={{
+        display: 'flex',
+        gap: '10px',
+        marginTop: '25px',
+        flexWrap: 'wrap',
+      }}>
+        {project.repoLink && (
+          <a 
+            href={project.repoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              backgroundColor: 'rgba(102, 126, 234, 0.15)',
+              color: '#667eea',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: '600',
+              border: '1px solid rgba(102, 126, 234, 0.3)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(102, 126, 234, 0.25)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(102, 126, 234, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Repository
+          </a>
+        )}
+        
+        {project.deployLink && (
+          <a 
+            href={project.deployLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              backgroundColor: 'rgba(86, 204, 157, 0.15)',
+              color: '#56cc9d',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: '600',
+              border: '1px solid rgba(86, 204, 157, 0.3)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(86, 204, 157, 0.25)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(86, 204, 157, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Live Demo
+          </a>
+        )}
+        
+        {project.videoLink && (
+          <a 
+            href={project.videoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              backgroundColor: 'rgba(255, 86, 86, 0.15)',
+              color: '#ff5656',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: '600',
+              border: '1px solid rgba(255, 86, 86, 0.3)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 86, 86, 0.25)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 86, 86, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Watch Video
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+))}
           </div>
         </div>
       </section>
