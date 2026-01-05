@@ -3,11 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist'
+  resolve: {
+    dedupe: ['react', 'react-dom'],
   },
-  preview: {
-    host: true,
-    allowedHosts: true 
-  }
 })
