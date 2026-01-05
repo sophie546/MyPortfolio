@@ -6,4 +6,8 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
+  preview: {
+    allowedHosts: ['myportfolio-jsbz.onrender.com'],
+    port: 4173,     
+  }
 })
