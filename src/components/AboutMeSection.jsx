@@ -211,13 +211,6 @@ export default function AboutMeSection() {
             borderRadius: '50%',
             animation: 'pulse 2s infinite'
           }} />
-          <span style={{
-            color: '#d0e0f0',
-            fontSize: '13px',
-            fontWeight: '500'
-          }}>
-            3D Character Model
-          </span>
         </div>
       </div>
 
